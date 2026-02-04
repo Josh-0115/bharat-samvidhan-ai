@@ -1,0 +1,18 @@
+const mongoose = require('mongoose');
+
+const ChatSchema = new mongoose.Schema({
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  title: { type: String, required: true },
+  language: { type: String, default: 'English' },
+  messages: [
+    {
+      role: { type: String, enum: ['user', 'assistant'], required: true },
+      content: { type: String, required: true },
+      sources: [{ title: String, uri: String }], // To store search sources
+      timestamp: { type: Date, default: Date.now }
+    }
+  ],
+  updatedAt: { type: Date, default: Date.now }
+});
+
+module.exports = mongoose.model('Chat', ChatSchema);
