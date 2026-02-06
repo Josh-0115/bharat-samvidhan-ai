@@ -16,7 +16,7 @@ const ChatView = (props) => {
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-140px)] md:h-[calc(100vh-120px)] animate-in fade-in slide-in-from-bottom-2 duration-500">
+    <div className="flex flex-col pt-15 h-[calc(100vh-140px)] md:h-[calc(100vh-120px)] animate-in fade-in slide-in-from-bottom-2 duration-500">
       
       {/* Active Session Header */}
       <div className="bg-white border border-gray-200 rounded-3xl px-6 py-4 mb-8 shadow-sm flex items-center justify-between border-l-8 border-l-blue-600 shrink-0">
@@ -42,7 +42,7 @@ const ChatView = (props) => {
       {/* Messages Area */}
       <div className="flex-1 overflow-y-auto space-y-10 pb-32 scrollbar-hide px-2 md:px-4">
         {messages.length === 0 ? (
-          <div className="h-full flex flex-col items-center justify-center text-center py-20">
+          <div className="h-full flex flex-col items-center justify-start pt-16 md:pt-20 lg:pt-5">
             <div className="w-28 h-28 bg-linear-to-br from-blue-50 to-indigo-50 rounded-3xl flex items-center justify-center mb-8 shadow-md">
               <MessageSquare className="text-blue-600" size={56} />
             </div>
