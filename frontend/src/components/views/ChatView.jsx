@@ -16,15 +16,15 @@ const ChatView = (props) => {
   };
 
   return (
-    <div className="flex flex-col pt-15 h-[calc(100vh-140px)] md:h-[calc(100vh-120px)] animate-in fade-in slide-in-from-bottom-2 duration-500">
+    <div className="flex flex-col pt-4 h-[calc(100vh-160px)] md:h-[calc(100vh-140px)] animate-in fade-in slide-in-from-bottom-2 duration-500">
       
       {/* Active Session Header */}
-      <div className="bg-white border border-gray-200 rounded-3xl px-6 py-4 mb-8 shadow-sm flex items-center justify-between border-l-8 border-l-blue-600 shrink-0">
-        <div className="flex items-center gap-4">
+      <div className="bg-white border border-gray-200 rounded-3xl px-4 md:px-6 py-4 mb-6 md:mb-8 shadow-sm flex items-center justify-between border-l-8 border-l-blue-600 shrink-0">
+        <div className="flex items-center gap-2 md:gap-4">
           <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
           <div>
             <div className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Active Consultation</div>
-            <div className="text-sm font-semibold truncate max-w-55 md:max-w-xs">
+            <div className="text-xs md:text-sm font-semibold truncate max-w-35 md:max-w-xs">
               {activeSessionId 
                 ? sessions.find(s => s._id === activeSessionId)?.title 
                 : 'New Inquiry'}
@@ -40,7 +40,7 @@ const ChatView = (props) => {
       </div>
 
       {/* Messages Area */}
-      <div className="flex-1 overflow-y-auto space-y-10 pb-32 scrollbar-hide px-2 md:px-4">
+      <div className="flex-1 overflow-y-auto space-y-6 md:space-y-10 pb-32 scrollbar-hide px-2 md:px-4">
         {messages.length === 0 ? (
           <div className="h-full flex flex-col items-center justify-start pt-16 md:pt-20 lg:pt-5">
             <div className="w-28 h-28 bg-linear-to-br from-blue-50 to-indigo-50 rounded-3xl flex items-center justify-center mb-8 shadow-md">
@@ -73,7 +73,7 @@ const ChatView = (props) => {
               className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} group/msg animate-in slide-in-from-bottom-2 duration-300`}
             >
               <div 
-                className={`max-w-[92%] md:max-w-[82%] rounded-3xl p-6 md:p-8 shadow-md relative ${
+                className={`max-w-[90%] sm:max-w-[85%] md:max-w-[75%] lg:max-w-[65%] rounded-3xl p-4 md:p-6 lg:p-8 shadow-md relative ${
                   msg.role === 'user'
                     ? 'bg-blue-600 text-white rounded-tr-none'
                     : 'bg-white text-gray-800 rounded-tl-none border border-gray-200'

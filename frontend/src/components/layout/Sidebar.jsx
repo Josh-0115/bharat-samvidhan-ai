@@ -29,7 +29,7 @@ const Sidebar = ({
             {user.avatar}
           </div>
           <div className="flex-1 text-left">
-            <div className="text-sm font-black truncate">{user.name}</div>
+            <div className="text-sm font-black truncate">{user.username || user.name}</div>
             <div className="text-[10px] text-gray-400 font-bold uppercase tracking-tighter">Citizen Scholar</div>
           </div>
           <ChevronDown size={16} className="text-gray-300" />
@@ -46,53 +46,80 @@ const Sidebar = ({
         </button>
       )}
 
-      <nav className="flex flex-col gap-1.5 flex-1 overflow-y-auto scrollbar-hide">
-        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2 ml-1">Discovery</p>
-        {[
-          { id: ViewMode.HOME, icon: Home, label: 'Dashboard' },
-          { id: ViewMode.EXPLORE, icon: BookOpen, label: 'Article Library' },
-          { id: ViewMode.CONTACTS, icon: PhoneCall, label: 'Legal Help' },
-          { id: ViewMode.CHAT, icon: MessageSquare, label: 'AI Assistant', action: startNewChat },
-          ...(user ? [{ id: ViewMode.HISTORY, icon: History, label: 'Past Chats' }] : [])
-        ].map((item) => (
-          <button
-            key={item.id}
-            onClick={() => {
-              if (item.action) item.action();
-              else setView(item.id);
-            }}
-            className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
-              view === item.id 
-                ? 'bg-blue-600 text-white shadow-lg shadow-blue-100' 
-                : 'text-gray-600 hover:bg-gray-50'
-            }`}
-          >
-            <item.icon size={20} />
-            <span className="font-semibold text-sm">{item.label}</span>
-          </button>
-        ))}
+<nav className="flex flex-col gap-1.5 flex-1 overflow-hidden">
+  {/* Discovery section – no scroll here */}
+  <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2 ml-1">
+    Discovery
+  </p>
 
-        {user && sessions.length > 0 && (
-          <div className="mt-8">
-            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3 ml-1">Recent Sessions</p>
-            <div className="space-y-1">
-              {sessions.slice(0, 5).map(s => (
-                <button
-                  key={s.id}
-                  onClick={() => loadSession(s)}
-                  className="w-full text-left px-4 py-2 text-xs font-semibold text-gray-600 truncate hover:bg-gray-50 rounded-lg flex items-center gap-2 group"
-                >
-                  <Clock size={12} className="shrink-0" />
-                  <span className="flex-1 truncate">{s.title}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-      </nav>
+  {[
+    { id: ViewMode.HOME, icon: Home, label: 'Dashboard' },
+    { id: ViewMode.EXPLORE, icon: BookOpen, label: 'Article Library' },
+    { id: ViewMode.CONTACTS, icon: PhoneCall, label: 'Legal Help' },
+    { id: ViewMode.CHAT, icon: MessageSquare, label: 'AI Assistant', action: startNewChat },
+    ...(user ? [{ id: ViewMode.HISTORY, icon: History, label: 'Past Chats' }] : [])
+  ].map((item) => (
+    <button
+      key={item.id}
+      onClick={() => {
+        if (item.action) item.action();
+        else setView(item.id);
+      }}
+      className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
+        view === item.id 
+          ? 'bg-blue-600 text-white shadow-lg shadow-blue-100' 
+          : 'text-gray-600 hover:bg-gray-50'
+      }`}
+    >
+      <item.icon size={20} />
+      <span className="font-semibold text-sm">{item.label}</span>
+    </button>
+  ))}
+
+  {/* Recent Sessions – scrollable only here */}
+  {user && sessions.length > 0 && (
+    <div className="mt-8 flex flex-col min-h-0"> {/* min-h-0 helps flex scrolling */}
+      <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3 ml-1 shrink-0">
+        Recent Sessions
+      </p>
+
+      {/* Scrollable container with visible scrollbar */}
+      <div 
+        className="
+          flex-1 overflow-y-auto 
+          scrollbar-thin           /* thin scrollbar – Tailwind v3+ */
+          scrollbar-thumb-gray-400 
+          scrollbar-track-gray-100 
+          scrollbar-thumb-rounded 
+          hover:scrollbar-thumb-gray-500 
+          pr-2                     /* padding to prevent content overlap with scrollbar */
+          -mr-2                    /* compensate padding on right if needed */
+        "
+      >
+        <div className="space-y-1 pb-2"> {/* pb-2 for breathing room at bottom */}
+          {sessions.map((s) => (   // removed slice(0,5) → show all, scroll if needed
+            <button
+              key={s.id}
+              onClick={() => loadSession(s)}
+              className="
+                w-full text-left px-4 py-2.5 
+                text-xs font-semibold text-gray-700 
+                truncate hover:bg-gray-50 
+                rounded-lg flex items-center gap-2.5
+              "
+            >
+              <Clock size={14} className="shrink-0 text-gray-500" />
+              <span className="flex-1 truncate">{s.title || 'Untitled session'}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  )}
+</nav>
 
       {user && (
-        <div className="mt-auto pt-6 border-t border-gray-200">
+        <div className="mt-auto pt-3 border-t border-gray-200">
           <button onClick={handleLogout} className="flex items-center gap-3 w-full px-4 py-3 text-sm font-bold text-red-600 hover:bg-red-50 rounded-xl transition-colors">
             <LogOut size={20} /> Logout
           </button>

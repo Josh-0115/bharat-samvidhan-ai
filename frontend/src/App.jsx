@@ -140,8 +140,8 @@ const App = () => {
       />
 
       {/* Main Content Area */}
-      <main className="flex-1 md:ml-72 p-4 md:p-8 pb-32">
-        <div className="max-w-5xl mx-auto">
+      <main className="flex-1 md:ml-72 p-3 md:p-6 lg:p-8 pb-32">
+        <div className="max-w-6xl mx-auto">
           
           {view === ViewMode.HOME && (
             <HomeView 
